@@ -1,0 +1,28 @@
+
+require("dotenv").config();
+
+const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
+const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
+
+
+const snsClient = new SNSClient({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
+});
+
+
+// Initialize AWS SES Client
+const sesClient = new SESClient({
+    region: process.env.AWS_REGION, 
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
+});
+
+
+
+module.exports = { snsClient, PublishCommand, sesClient, SendEmailCommand };
