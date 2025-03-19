@@ -21,7 +21,7 @@
         if (error) {
             console.error("SMTP Connection Error:", error);
         } else {
-            console.log("✅ SMTP Server is Ready to Send Emails");
+            console.log("✅ SMTP Server is Ready to Send Emails", success);
         }
     });
 
@@ -48,9 +48,6 @@
         };
         try {
             const info = await transporter.sendMail(mailOptions);
-            const end = Date.now();  
-            console.log(`✅ Email sent to ${email} in ${end - start}ms`);  
-            console.log(info)
             return {
                 success: true,
                 message: "Email sent successfully!",
@@ -92,9 +89,6 @@
         };
         try {
             const info = await transporter.sendMail(mailOptions);
-            console.log(info)
-            const end = Date.now();  
-            console.log(`✅ Email sent to ${email} in ${end - start}ms`);  
             return {
                 success: true,
                 message: "Email sent successfully!",
