@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const capitalizeWords = (value) => {
     if (!value) return value;
     return value
-        .split(" ") // Split words by space
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
-        .join(" "); // Join back into a string
+        .split(" ") 
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(" ");
 };
 
 const userDetailsSchema = new mongoose.Schema({
@@ -14,7 +14,9 @@ const userDetailsSchema = new mongoose.Schema({
     gender: { type: String, enum: ['Male', 'Female'], required: true },
     email: { type: String, required: true, unique: true },
     mobile: { type: String, required: true, unique: true },
-    fullName: { type: String, required: true },
+    surName: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String },
     motherTongue: { type: String, required: true },
     religion: { type: String, required: true },
     verifyOtp: { type: String },
@@ -57,9 +59,10 @@ userDetailsSchema.pre("save", function (next) {
     next();
 });
 
-// ✅ Capitalize fields before saving
 userDetailsSchema.pre("save", function (next) {
-    this.fullName = capitalizeWords(this.fullName);
+    this.surName = capitalizeWords(this.surName);
+    this.firstName = capitalizeWords(this.firstName);
+    this.lastName = capitalizeWords(this.lastName);
     this.motherTongue = capitalizeWords(this.motherTongue);
     this.religion = capitalizeWords(this.religion);
     this.caste = capitalizeWords(this.caste);

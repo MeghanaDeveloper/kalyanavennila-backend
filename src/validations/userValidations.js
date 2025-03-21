@@ -22,13 +22,21 @@ const passwordValidation = Joi.object({
     password: Joi.string()
         .min(8)
         .pattern(new RegExp("^(?=.*[0-9])(?=.*[@#$]).{8,}$"))
-        .required()
+        .optional()
+        .messages({
+            "string.min": "Password must be at least 8 characters long and include at least 1 number and 1 special character (@, #, $)."
+        }),
+        newPassword: Joi.string()
+        .min(8)
+        .pattern(new RegExp("^(?=.*[0-9])(?=.*[@#$]).{8,}$"))
+        .optional()
         .messages({
             "string.min": "Password must be at least 8 characters long and include at least 1 number and 1 special character (@, #, $)."
         }),
 
     confirmPassword: Joi.string()
-        .valid(Joi.ref("password"))
+    .valid(Joi.ref('password'))
+    .valid(Joi.ref('newPassword'))
         .required()
         .messages({
             "any.only": "Passwords do not match!"

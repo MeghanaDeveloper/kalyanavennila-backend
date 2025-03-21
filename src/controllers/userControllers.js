@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt')
 
 
 const userSignupDetails = async (req, res) => {
-    const {accountCreatedBy, gender, email, mobile, fullName, motherTongue, religion} = req.body
+    const {accountCreatedBy, gender, email, mobile, surName, firstName, lastName, motherTongue, religion} = req.body
 
     try {
 
@@ -35,7 +35,7 @@ const userSignupDetails = async (req, res) => {
         
         const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-        const signUpDetails = await userDetailsModel.create({accountCreatedBy, gender, email, mobile, fullName, motherTongue, religion,  verifyOtp: otp, otpExpiresAt,isUserVerified: false
+        const signUpDetails = await userDetailsModel.create({accountCreatedBy, gender, email, mobile, surName, firstName, lastName, motherTongue, religion,  verifyOtp: otp, otpExpiresAt,isUserVerified: false
         })
 
         const token = createToken({ _id: signUpDetails._id, email: signUpDetails.email, mobile: signUpDetails.mobile });
@@ -82,28 +82,25 @@ const updateUserDetails = async (req, res) => {
 //user login
 const userLoginDetails = async (req, res) => {
     const { accountId, password } = req.body;
-    const { email } = req.userDetails
+
     try {
 
-        const user = await userDetailsModel.findOne({ email });
+        const user = await userDetailsModel.findOne({ accountId });
         if (!user) {
-            return res.status(400).json({ error: "This Email address is not registered. Please sign up first!" });
+            return res.status(400).json({ error: "Invalid Account ID! No user found with this account ID." });
         }
         
         if (!user.isUserVerified) { 
             return res.status(400).json({ error: "Account not verified. Please verify your OTP before logging in." }); 
         }
 
-        if (!user.accountId) {
-            return res.status(400).json({ error: " AccountId is not generated !" });
+        const emailMatches = await userDetailsModel.findOne({ accountId, email: user.email });
+        if (!emailMatches) {
+            return res.status(400).json({ error: "Invalid Account ID" });
         }
 
         if (!user.password) {
             return res.status(400).json({ error: "You have not set a password. Please create a password before logging in." });
-        }
-
-        if (accountId !== user.accountId) {
-            return res.status(400).json({ error: "Invalid AccountId !" });
         }
 
         const match = await bcrypt.compare(password, user.password);

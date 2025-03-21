@@ -16,9 +16,9 @@ router.post('/resend-otp', authUser, resendOtp)
 
 router.post('/create-password', authUser, createPassword)
 
-router.post('/login',authUser, userLoginDetails)
+router.post('/login', userLoginDetails)
 
-router.post('/forgot-password', authUser, forgotPassword)
+router.post('/forgot-password', forgotPassword)
 
 router.post('/reset-password', authUser, resetPassword)
 

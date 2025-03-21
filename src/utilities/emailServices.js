@@ -36,7 +36,7 @@
                 <h2>Kalyana Vennila - OTP Verification</h2>
                 <p>Dear User,</p>
                 <p>Thank you for registering with <strong>Kalyana Vennila</strong>. To verify your email, please use the OTP below:</p>
-                <div style="padding: 10px; font-size: 20px;  font-weight: bold">
+                <div style="padding: 10px; font-size: 24px;  font-weight: bold">
                     ${otp}
                 </div>
                 <p>This OTP is valid for only <strong>10 minutes</strong>. Please do not share this code with anyone.</p>
@@ -73,7 +73,7 @@
                 <p>Dear User,</p>
                 <p>Thank you for registering with <strong>Kalyana Vennila</strong>. Your account has been successfully created.</p>
                 <p><strong>Your Account ID:</strong></p>
-                <div style="padding: 10px; font-size: 18px;  font-weight: bold">
+                <div style="padding: 10px; font-size: 24px;  font-weight: bold">
                     ${accountId}
                 </div>
                 <p>Please keep your Account ID safe for future logins.</p>
