@@ -3,10 +3,11 @@ const express = require("express")
 
 const router = express.Router()
 
-const { userSignupDetails, userLoginDetails, updateUserDetails } = require("../controllers/userControllers")
+const { userSignupDetails, userLoginDetails} = require("../controllers/userControllers")
 const { authUser } = require("../middlewares/authMiddleware")
 const { OTPVerification, resendOtp } = require("../controllers/otpController")
 const { createPassword, forgotPassword, resetPassword } = require("../controllers/passwordController")
+
 
 router.post('/registration', userSignupDetails)
 
@@ -22,6 +23,6 @@ router.post('/forgot-password', forgotPassword)
 
 router.post('/reset-password', authUser, resetPassword)
 
-router.put('/update-profile', authUser, updateUserDetails)
+
 
 module.exports = router

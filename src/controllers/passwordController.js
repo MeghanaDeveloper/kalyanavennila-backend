@@ -65,8 +65,6 @@ const forgotPassword = async (req, res) => {
 
         user.temporaryPassword = password
 
-       // await sendTemporaryPasswordToEmail(email, password)
-
         await user.save()
 
         const token = createToken({ _id: user._id, email: user.email, mobile: user.mobile, accountId: user.accountId });

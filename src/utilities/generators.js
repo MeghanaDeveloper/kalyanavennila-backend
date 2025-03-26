@@ -5,13 +5,13 @@ const generateOtp = async () => {
   
   //account id
   const generateAccountId = () => {
-      const randomNum = Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit number
-      return `KV${randomNum}`; // Example: KV738291
+      const randomNum = Math.floor(100000 + Math.random() * 900000); 
+      return `KV${randomNum}`; 
   };
   
   //temporary password
   const generateTempPassword = () => {
-      const characters = "abcdefghijklmnopqrstuvwxyz"; // Only small letters
+      const characters = "abcdefghijklmnopqrstuvwxyz";
       let tempPassword = "";
   
       for (let i = 0; i < 10; i++) {

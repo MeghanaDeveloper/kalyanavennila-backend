@@ -21,18 +21,18 @@ const authUser = async (req, res, next) => {
         const { _id, email, mobile } = jwt.verify(token, process.env.JWT_TOKEN)
 
         if (!_id || !email || !mobile) {
-            return res.status(401).json({ error: "Invalid token" });
+            return res.status(401).json({ error: "Your session has expired. Please log in again." });
         }
 
-        const user = await userDetailsModel.findById(_id);
+        const user = await userDetailsModel.findOne({ _id, email });
 
         if (!user) {
-            return res.status(401).json({ error: "User not found" });
+            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the email doesn't match." });
         }
 
         // Optional checks for email and mobile in addition to ID
         if (user.email !== email || user.mobile !== mobile) {
-            return res.status(401).json({ error: "Token and user details does not match" });
+            return res.status(401).json({ error: "Your login details don't match our records. Please try again." });
         }
 
         // Attach user details to the request object
@@ -42,7 +42,7 @@ const authUser = async (req, res, next) => {
         next()
     }
     catch (err) {
-        res.status(401).json({ error: 'Request is not authorized ! Please Check the token' })
+        res.status(401).json({ error:"Something went wrong with your login. Please sign in again."})
     }
 }
 

@@ -13,6 +13,7 @@
             pass: process.env.GODADDY_PASSWORD
         },
         tls: {
+            ciphers: "SSLv3",
             rejectUnauthorized: false
         },
     });
@@ -77,7 +78,7 @@
                     ${accountId}
                 </div>
                 <p>Please keep your Account ID safe for future logins.</p>
-                <p className=" text-red-500 font-semibold">
+                <p style="color: red; ">
     ⚠️ Important: Please **save your Account ID**. It will not be shown again!
     </p>
                 <p>If you have any questions, feel free to contact our support team.</p>

@@ -1,4 +1,5 @@
- const { userDetailsModel } = require("../models/userSchema");
+
+const { userDetailsModel } = require("../models/userSchema");
 const { sendOtpToEmail } = require("../utilities/emailServices");
 const { generateOtp } = require("../utilities/generators");
 const createToken = require("../utilities/token");
@@ -28,11 +29,6 @@ const userSignupDetails = async (req, res) => {
 
         const otp = await generateOtp() 
 
-        // const isSent = await sendOtpToEmail(email, otp);
-        // if (!isSent) {
-        //     return res.status(400).json({ error: "Failed to send OTP. Try again later." });
-        // }
-        
         const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
         const signUpDetails = await userDetailsModel.create({accountCreatedBy, gender, email, mobile, surName, firstName, lastName, motherTongue, religion,  verifyOtp: otp, otpExpiresAt,isUserVerified: false
@@ -54,30 +50,6 @@ const userSignupDetails = async (req, res) => {
         res.status(400).json({ error: err.message })
     }
 }
-
-//update profile
-const updateUserDetails = async (req, res) => {
-    const { email } = req.userDetails;
-    const updateFields = req.body;
-
-    try {
-        const user = await userDetailsModel.findOne({email});
-        if (!user) {
-            return res.status(404).json({ error: "This Email address is not registered. Please sign up first!" });
-        }
-
-        Object.keys(updateFields).forEach((key) => {
-            if (updateFields[key] !== undefined) {
-                user[key] = updateFields[key];
-            }
-        });
-
-        await user.save();
-        res.status(200).json({ message: "User details updated successfully", user });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-};
 
 //user login
 const userLoginDetails = async (req, res) => {
@@ -110,7 +82,17 @@ const userLoginDetails = async (req, res) => {
 
         const token = createToken({ _id: user._id, email: user.email, mobile:user.mobile, accountId: user.accountId });
 
-        const { otp, otpExpiresAt, verifyOtp, password: _, ...profileDetails } = user.toObject();
+        const profileDetails = {
+            accountId: user.accountId,
+            surName: user.surName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            mobile: user.mobile,
+            gender: user.gender,
+            motherTongue: user.motherTongue,
+            religion: user.religion
+        };
 
          res.status(200).json({
             message: "Successfully Logged In",
@@ -123,9 +105,34 @@ const userLoginDetails = async (req, res) => {
     }
 };
 
+//update profile
+const updateProfileDetails = async (req, res) => {
+    const { email } = req.userDetails;
+    const updateFields = req.body;
+
+    try {
+        const user = await userDetailsModel.findOne({email});
+        if (!user) {
+            return res.status(404).json({ error: "This Email address is not registered. Please sign up first!" });
+        }
+
+        Object.keys(updateFields).forEach((key) => {
+            if (updateFields[key] !== undefined) {
+                user[key] = updateFields[key];
+            }
+        });
+
+        await user.save();
+        res.status(200).json({ message: "User details updated successfully", user });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+
 
 module.exports={
     userSignupDetails,
     userLoginDetails,
-    updateUserDetails
+    updateProfileDetails
 } 

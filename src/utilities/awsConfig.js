@@ -1,11 +1,7 @@
+const { S3Client } = require('@aws-sdk/client-s3');
+require('dotenv').config();
 
-require("dotenv").config();
-
-const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
-const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
-
-
-const snsClient = new SNSClient({
+const s3Client = new S3Client({
     region: process.env.AWS_REGION,
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -13,16 +9,4 @@ const snsClient = new SNSClient({
     }
 });
 
-
-// Initialize AWS SES Client
-const sesClient = new SESClient({
-    region: process.env.AWS_REGION, 
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
-});
-
-
-
-module.exports = { snsClient, PublishCommand, sesClient, SendEmailCommand };
+module.exports = s3Client;

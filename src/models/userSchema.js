@@ -37,9 +37,11 @@ const userDetailsSchema = new mongoose.Schema({
     jobType: { type: String, enum: ['Govt', 'MNC', 'Private', 'NRI', 'Business', 'Others'] },
     lookingFor: { type: String, enum: ['Man', 'Woman'] },
     partnerAge: { type: String, enum: ['21-25', '25-30', '30-35', '35-40', '40-45', '45-50', '50-55'] },
-    partnerReligion: { type: String, default: "No Religion Bar", immutable: true },
-    partnerCaste: { type: String, default: "No Caste Bar", immutable: true },
-    partnerMotherTongue: { type: String, default: "No Language Bar", immutable: true },
+    partnerReligion: { type: String, default: "No Religion Bar",},
+    partnerCaste: { type: String, default: "No Caste Bar",},
+    partnerMotherTongue: { type: String, default: "No Language Bar",},
+    profilePic:{ type: String },
+    documents: { type: [String]}
 },
  { timestamps: true }
 );

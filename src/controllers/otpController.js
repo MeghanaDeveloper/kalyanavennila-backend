@@ -42,11 +42,6 @@ const OTPVerification = async (req, res) => {
     
         await user.save();
 
-        // const emailResponse = await sendAccountIdToEmail(email, user.accountId);
-        // if (!emailResponse) {
-        //     return res.status(400).json({ error: "Failed to send OTP. Try again later." });
-        // }
-
         res.status(200).json({ message: "OTP verified successfully!", accountId:user.accountId});
 
         setImmediate(async () => {
@@ -75,11 +70,6 @@ const resendOtp = async (req, res) => {
         user.isUserVerified = false;
         user.otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); 
         await user.save();
-
-        // const isSent = await sendOtpToEmail(email, resentOtp);
-        // if (!isSent) {
-        //     return res.status(400).json({ error: "Failed to send OTP. Try again later." });
-        // }
         
         res.status(200).json({ message: "OTP has been resent to your email.", otp: resentOtp });
 
