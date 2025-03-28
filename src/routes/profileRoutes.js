@@ -17,11 +17,11 @@ router.put('/update-profile-image', authUser, uploadImages.single('profile-pic')
 
 router.delete("/delete-profile-image", authUser, deleteProfileImage);
 
-router.post("/upload-documents", authUser, uploadFiles, multerMiddleware, uploadDocuments);
+router.post("/upload-documents", authUser, uploadFiles.single('documents'), multerMiddleware, uploadDocuments);
 
-router.put("/update-documents", authUser, uploadFiles, multerMiddleware, updateDocuments);
+router.put("/update-documents", authUser, uploadFiles.single('documents'), multerMiddleware, updateDocuments);
 
-router.delete("/delete-documents", authUser, uploadFiles, multerMiddleware, deleteDocuments);
+router.delete("/delete-documents", authUser, multerMiddleware, deleteDocuments);
 
 
 

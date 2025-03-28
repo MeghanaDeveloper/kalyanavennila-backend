@@ -35,7 +35,7 @@ const userDetailsSchema = new mongoose.Schema({
     myAge: { type: Number },  
     education: { type: String, enum: ['Professional Degree', 'Post Graduation', 'Graduation', 'Diploma'] },
     jobType: { type: String, enum: ['Govt', 'MNC', 'Private', 'NRI', 'Business', 'Others'] },
-    lookingFor: { type: String, enum: ['Man', 'Woman'] },
+    lookingFor: { type: String, enum: ['Bride', 'Groom'] },
     partnerAge: { type: String, enum: ['21-25', '25-30', '30-35', '35-40', '40-45', '45-50', '50-55'] },
     partnerReligion: { type: String, default: "No Religion Bar",},
     partnerCaste: { type: String, default: "No Caste Bar",},
