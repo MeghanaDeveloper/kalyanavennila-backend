@@ -42,7 +42,7 @@ const authUser = async (req, res, next) => {
         next()
     }
     catch (err) {
-        res.status(401).json({ error:"Something went wrong with your login. Please sign in again."})
+        res.status(401).json({ error: error.message})
     }
 }
 

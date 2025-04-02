@@ -4,18 +4,17 @@
         host: process.env.GODADDY_SMTP_HOST, 
         port: process.env.GODADDY_SMTP_PORT, 
         secure: true, 
-        pool: true, 
-        maxConnections: 5, 
-        maxMessages: 100, 
-        rateLimit: 5, 
+        // pool: true, 
+        // maxConnections: 5, 
+        // maxMessages: 100, 
+        // rateLimit: 5, 
         auth: { 
             user: process.env.GODADDY_EMAIL,
             pass: process.env.GODADDY_PASSWORD
         },
         tls: {
-            ciphers: "SSLv3",
-            rejectUnauthorized: false
-        },
+            rejectUnauthorized: false  // ✅ Fix potential SSL issues
+        }
     });
 
     transporter.verify(function (error, success) {

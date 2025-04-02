@@ -92,7 +92,7 @@ const uploadDocuments = async (req, res) => {
     const { email } = req.userDetails;
 
     try {
-        if (!req.files || req.files.length === 0) {
+        if (!req.file) {
             return res.status(400).json({ error: "No documents uploaded" });
         }
 
@@ -114,7 +114,7 @@ const uploadDocuments = async (req, res) => {
 const updateDocuments = async (req, res) => {
     const { email } = req.userDetails;
     try {
-        if (!req.files) {
+        if (!req.file) {
             return res.status(400).json({ error: "No documents uploaded" });
         }
 

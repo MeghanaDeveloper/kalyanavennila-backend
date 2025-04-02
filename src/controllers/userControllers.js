@@ -129,10 +129,43 @@ const updateProfileDetails = async (req, res) => {
     }
 };
 
+//users
+const getUserByEmail = async (req, res) => {
+    const { email } = req.userDetails;
+    try {
+        const user = await userDetailsModel.findOne({email});
+        if (!user) {
+            return res.status(404).json({ error: "This Email address is not registered. Please sign up first!" });
+        }
+
+        res.status(200).json({ message: "Users retrieved successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch users", error: error.message });
+    }
+};
+
+//all users
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await userDetailsModel.find({});
+        const usersCount = users.length
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ error: "No users found!" });
+        }
+
+        res.status(200).json({ message: "Users retrieved successfully", usersCount, users });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch users", error: error.message });
+    }
+};
+
 
 
 module.exports={
     userSignupDetails,
     userLoginDetails,
-    updateProfileDetails
+    updateProfileDetails,
+    getUserByEmail,
+    getAllUsers
 } 

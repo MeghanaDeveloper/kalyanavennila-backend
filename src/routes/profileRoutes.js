@@ -17,9 +17,9 @@ router.put('/update-profile-image', authUser, uploadImages.single('profile-pic')
 
 router.delete("/delete-profile-image", authUser, deleteProfileImage);
 
-router.post("/upload-documents", authUser, uploadFiles.single('documents'), multerMiddleware, uploadDocuments);
+router.post("/upload-documents", authUser, uploadFiles.single('proof-document'), multerMiddleware, uploadDocuments);
 
-router.put("/update-documents", authUser, uploadFiles.single('documents'), multerMiddleware, updateDocuments);
+router.put("/update-documents", authUser, uploadFiles.single('proof-document'), multerMiddleware, updateDocuments);
 
 router.delete("/delete-documents", authUser, multerMiddleware, deleteDocuments);
 
