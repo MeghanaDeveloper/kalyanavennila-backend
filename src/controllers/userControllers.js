@@ -1,5 +1,5 @@
 
-const { userDetailsModel } = require("../models/userSchema");
+const { userDetailsModel, calculateProfileCompletion } = require("../models/userSchema");
 const { sendOtpToEmail } = require("../utilities/emailServices");
 const { generateOtp } = require("../utilities/generators");
 const createToken = require("../utilities/token");
@@ -121,6 +121,8 @@ const updateProfileDetails = async (req, res) => {
                 user[key] = updateFields[key];
             }
         });
+
+        user.profileCompletion = calculateProfileCompletion(user);
 
         await user.save();
         res.status(200).json({ message: "User details updated successfully", user });

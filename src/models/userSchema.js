@@ -24,7 +24,6 @@ const userDetailsSchema = new mongoose.Schema({
     isUserVerified: { type: Boolean, default: false },
     password: { type: String },
     temporaryPassword: { type: String },
-
     languages: { 
         type: [String], 
         enum: ["Tamil", "Hindi", "English", "Telugu", "Malayalam", "Kannada", "Marathi", "Gujarati", "Bengali", "Punjabi", "Urdu"] 
@@ -42,10 +41,34 @@ const userDetailsSchema = new mongoose.Schema({
     partnerCaste: { type: String, default: "No Caste Bar",},
     partnerMotherTongue: { type: String, default: "No Language Bar",},
     profilePic:{ type: String },
-    documents: { type: String,  }
+    documents: { type: String},
+    profileCompletion: { type: Number, default: 0 }
 },
  { timestamps: true }
 );
+
+const requiredFields = [
+    "surName", "firstName", "lastName", "dateOfBirth","gender", "motherTongue", "religion", "caste","subCaste","myAge","languages","email", "mobile", "education", "jobType","otherJobType","lookingFor", "partnerMotherTongue","partnerCaste","partnerReligion","partnerAge","profilePic", "documents"
+];
+
+// Function to calculate profile completion percentage
+const calculateProfileCompletion = (user) => {
+    let filledFields = requiredFields.filter(field => {
+        const value = user[field];
+
+        if (Array.isArray(value)) return value.length > 0; // Arrays must have values
+        if (typeof value === "object" && value !== null) return Object.keys(value).length > 0; // Objects must not be empty
+        return Boolean(value); // Strings, Numbers, and other types must not be empty
+    });
+
+    // Calculate percentage
+    return Math.round((filledFields.length / requiredFields.length) * 100);
+};
+
+userDetailsSchema.pre("save", function (next) {
+    this.profileCompletion = calculateProfileCompletion(this);
+    next();
+});
 
 
 userDetailsSchema.pre("save", function (next) {
@@ -75,4 +98,4 @@ userDetailsSchema.pre("save", function (next) {
 
 const userDetailsModel = new mongoose.model("UserDetails", userDetailsSchema);
 
-module.exports = { userDetailsModel };
+module.exports = { userDetailsModel , calculateProfileCompletion};
