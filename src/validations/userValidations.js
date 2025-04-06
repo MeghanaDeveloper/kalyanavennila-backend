@@ -37,7 +37,7 @@ const passwordValidation = Joi.object({
     confirmPassword: Joi.string()
     .valid(Joi.ref('password'))
     .valid(Joi.ref('newPassword'))
-        .required()
+    .optional()
         .messages({
             "any.only": "Passwords do not match!"
         })

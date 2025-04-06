@@ -20,9 +20,11 @@ require('./db/connection')
 //routes
 const authRoutes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
+const adminRoutes = require('./routes/adminRoutes')
 
 app.use('/api/auth', authRoutes )
 app.use('/api/profile', profileRoutes )
+app.use('/api/admin', adminRoutes)
 
 app.get("/", (req,res) => {
     res.send('hello world')

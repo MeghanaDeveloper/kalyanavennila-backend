@@ -1,10 +1,9 @@
 
-
 const jwt = require('jsonwebtoken')
-const { userDetailsModel } = require('../models/userSchema')
+const { adminDetailsModel } = require('../models/adminSchema')
 
 
-const authUser = async (req, res, next) => {
+const adminUser = async (req, res, next) => {
     const { authorization } = req.headers
     if (!authorization) {
         res.status(401).json({ error: "Auth token is required" })
@@ -18,21 +17,16 @@ const authUser = async (req, res, next) => {
     try {
 
         // checking token entered by user and generated at time of login is same or not 
-        const { _id, email, mobile } = jwt.verify(token, process.env.JWT_TOKEN)
+        const { userName, _id } = jwt.verify(token, process.env.JWT_TOKEN)
 
-        if (!_id || !email || !mobile) {
+        if (!_id || !userName) {
             return res.status(401).json({ error: "Your session has expired. Please log in again." });
         }
 
-        const user = await userDetailsModel.findOne({ _id, email });
+        const user = await adminDetailsModel.findOne({ _id, userName });
 
         if (!user) {
-            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the email doesn't match." });
-        }
-
-        // Optional checks for email and mobile in addition to ID
-        if (user.email !== email || user.mobile !== mobile) {
-            return res.status(401).json({ error: "Your login details don't match our records. Please try again." });
+            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the user name doesn't match." });
         }
 
         // Attach user details to the request object
@@ -47,5 +41,5 @@ const authUser = async (req, res, next) => {
 }
 
 module.exports = {
-    authUser
+    adminUser
 }
