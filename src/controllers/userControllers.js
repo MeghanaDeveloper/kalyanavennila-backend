@@ -2,7 +2,7 @@
 const { userDetailsModel } = require("../models/userSchema");
 const { sendOtpToEmail } = require("../utilities/emailServices");
 const { generateOtp } = require("../utilities/generators");
-const createToken = require("../utilities/token");
+const { createToken } = require("../utilities/token");
 const { userValidation } = require("../validations/userValidations");
 const bcrypt = require('bcrypt')
 
@@ -101,7 +101,7 @@ const userLoginDetails = async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
     }
 };
 
@@ -140,25 +140,11 @@ const getUserByEmail = async (req, res) => {
 
         res.status(200).json({ message: "Users retrieved successfully", user });
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch users", error: error.message });
+        res.status(400).json({  error: error.message });
     }
 };
 
-//all users
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await userDetailsModel.find({});
-        const usersCount = users.length
 
-        if (!users || users.length === 0) {
-            return res.status(404).json({ error: "No users found!" });
-        }
-
-        res.status(200).json({ message: "Users retrieved successfully", usersCount, users });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch users", error: error.message });
-    }
-};
 
 
 
@@ -166,6 +152,5 @@ module.exports={
     userSignupDetails,
     userLoginDetails,
     updateProfileDetails,
-    getUserByEmail,
-    getAllUsers
+    getUserByEmail
 } 

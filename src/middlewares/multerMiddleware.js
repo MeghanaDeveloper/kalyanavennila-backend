@@ -8,7 +8,7 @@ const multerMiddleware = (err, req, res, next) => {
         if (err.message === "Only image files are allowed!") {
             return res.status(400).json({ error: "Only image files (JPG, PNG, etc.) are allowed!" });
         }
-        return res.status(500).json({ error: "File upload failed!", details: err.message });
+        return res.status(400).json({ error: "File upload failed!", details: err.message });
     }
     next(); 
 };

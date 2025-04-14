@@ -23,7 +23,7 @@ const uploadProfileImage = async (req, res) => {
 
         res.json({ message: "Profile picture uploaded successfully!", profilePic: req.file.location });
     } catch (error) {
-        res.status(500).json({ error: "Upload failed", error: error.message });
+        res.status(400).json({ error: "Upload failed", error: error.message });
     }
 };
 
@@ -53,7 +53,7 @@ const updateProfileImage = async (req, res) => {
 
         res.json({ message: "Profile picture updated successfully!", profilePic: req.file.location });
     } catch (error) {
-        res.status(500).json({ error: "Update failed", error: error.message });
+        res.status(400).json({ error: "Update failed", error: error.message });
     }
 };
 
@@ -82,7 +82,7 @@ const deleteProfileImage = async (req, res) => {
 
         res.json({ message: "Profile picture deleted successfully!" });
     } catch (error) {
-        res.status(500).json({ error: "Delete failed", error: error.message });
+        res.status(400).json({ error: "Delete failed", error: error.message });
     }
 };
 
@@ -106,7 +106,7 @@ const uploadDocuments = async (req, res) => {
 
         res.json({ message: "Documents uploaded successfully!", documents: req.file.location });
     } catch (error) {
-        res.status(500).json({ error: "Upload failed", error: error.message });
+        res.status(400).json({ error: "Upload failed", error: error.message });
     }
 };
 
@@ -136,7 +136,7 @@ const updateDocuments = async (req, res) => {
 
         res.json({ message: "Documents updated successfully!", documents: req.file.location });
     } catch (error) {
-        res.status(500).json({ error: "Update failed", error: error.message });
+        res.status(400).json({ error: "Update failed", error: error.message });
     }
 };
 
@@ -167,7 +167,7 @@ const deleteDocuments = async (req, res) => {
         res.json({ message: "All documents deleted successfully!" });
 
     } catch (error) {
-        res.status(500).json({ error: "Delete failed", error: error.message });
+        res.status(400).json({ error: "Delete failed", error: error.message });
     }
 };
 

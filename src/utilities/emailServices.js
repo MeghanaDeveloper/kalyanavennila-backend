@@ -141,9 +141,76 @@
         }
     };
 
+    const sendProfileApprovedEmail = async (email, name) => {
+        const mailOptions = {
+            from: process.env.GODADDY_EMAIL,
+            to: email,
+            subject: "Kalyana Vennila - Your Profile is Approved!",
+            html: `
+                <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: green;">🎉 Congratulations, ${name}!</h2>
+                    <p>Your profile has been <strong>successfully approved</strong> by the Kalyana Vennila team.</p>
+    
+                    <p style="font-size: 16px; font-weight: 500;">
+                        You can now <strong>subscribe</strong> and continue using our platform to <strong>view matching profiles</strong> and connect with suitable partners.
+                    </p>
+    
+                    <p>Thank you for choosing <strong>Kalyana Vennila</strong>. We are excited to be part of your journey!</p>
+    
+                    <br/>
+                    <p>Warm regards,</p>
+                    <p><strong>Kalyana Vennila Support Team</strong></p>
+                </div>
+            `
+        };
+    
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            return { success: true, messageId: info.messageId };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
+
+    const sendProfileRejectedEmail = async (email, name) => {
+        const mailOptions = {
+            from: process.env.GODADDY_EMAIL,
+            to: email,
+            subject: "Kalyana Vennila - Profile Rejected",
+            html: `
+                <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
+                    <h2 style="color: #cc0000;">Dear ${name},</h2>
+                    
+                    <p>Thank you for registering with <strong>Kalyana Vennila</strong>.</p>
+    
+                    <p>After carefully reviewing your profile, we regret to inform you that it has not been approved to go live on our platform.</p>
+    
+                    <p>This decision was made based on our profile review guidelines to ensure authenticity and compatibility within our community.</p>
+    
+                    <p>We sincerely appreciate your interest, and you're always welcome to reconnect with us or update your profile for future consideration.</p>
+    
+                    <p>Thank you once again for reaching out to us.</p>
+                    
+                    <br/>
+                    <p>Warm regards,</p>
+                    <p><strong>Kalyana Vennila Team</strong></p>
+                </div>
+            `
+        };  
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            return { success: true, messageId: info.messageId };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
+    
+    
 
     module.exports = {
         sendOtpToEmail,
         sendAccountIdToEmail,
-        sendTemporaryPasswordToEmail
+        sendTemporaryPasswordToEmail,
+        sendProfileApprovedEmail,
+        sendProfileRejectedEmail
     }

@@ -34,11 +34,12 @@ const uploadFiles = multer({
         metadata: (req, file, cb) => {
             cb(null, { fieldName: file.fieldname });
         },
+        contentDisposition: 'inline',
         key: (req, file, cb) => {
             cb(null, `proof-documents/${Date.now()}-${file.originalname}`);
         }
     }),
-    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB per file
+    limits: { fileSize: 2 * 1024 * 1024  }, // 2MB per file
     fileFilter: (req, file, cb) => {
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg") {
             cb(null, true);

@@ -7,9 +7,15 @@ const { adminDetailsModel } = require("../models/adminSchema");
 
 
 const createAdmin = async () => {
+  console.log('admin')
   try {
-    await mongoose.connect(process.env.MONGOOSE_CONNECTION);
-    console.log("✅ MongoDB connected");
+    mongoose.connect(process.env.MONGOOSE_CONNECTION)
+    .then(() => {
+        console.log("MongoDb Database connection for admin is established")
+    })
+    .catch((err) => {
+        console.log(`db error : ${err}`)
+    })
 
     const userName = "superadmin";
     const plainPassword = "Admin@123";

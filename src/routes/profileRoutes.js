@@ -9,17 +9,17 @@ const { uploadProfileImage, updateProfileImage, deleteProfileImage, uploadDocume
 const { uploadImages, uploadFiles } = require("../utilities/multer");
 const { multerMiddleware } = require("../middlewares/multerMiddleware");
 
-router.put('/update-profile', authUser, updateProfileDetails)
+router.patch('/update-profile', authUser, updateProfileDetails)
 
 router.post('/upload-profile-image', authUser, uploadImages.single('profile-pic'), multerMiddleware , uploadProfileImage);
 
-router.put('/update-profile-image', authUser, uploadImages.single('profile-pic'), multerMiddleware, updateProfileImage);
+router.patch('/update-profile-image', authUser, uploadImages.single('profile-pic'), multerMiddleware, updateProfileImage);
 
 router.delete("/delete-profile-image", authUser, deleteProfileImage);
 
 router.post("/upload-documents", authUser, uploadFiles.single('proof-document'), multerMiddleware, uploadDocuments);
 
-router.put("/update-documents", authUser, uploadFiles.single('proof-document'), multerMiddleware, updateDocuments);
+router.patch("/update-documents", authUser, uploadFiles.single('proof-document'), multerMiddleware, updateDocuments);
 
 router.delete("/delete-documents", authUser, multerMiddleware, deleteDocuments);
 

@@ -78,8 +78,8 @@ const userDetailsSchema = new mongoose.Schema(
     documents: { type: String },
     isProfileStatus: {
         type: String,
-        enum: [ 'pending','Approved', 'Rejected','Deleted'],
-        default: 'pending'
+        enum: [ 'Pending','Approved', 'Rejected'],
+        default: 'Pending'
       },
   },
   { timestamps: true }
