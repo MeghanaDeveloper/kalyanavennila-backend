@@ -45,6 +45,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// 
 const streamUserDocument = async (req, res) => {
   const { email } = req.query;
 
@@ -95,8 +96,79 @@ const streamUserDocument = async (req, res) => {
   }
 };
 
+//
+const getCountOfFieldsDetails = async (req, res) => {
+  try {
+    // 1. Count total users
+    const totalUsers = await userDetailsModel.countDocuments();
+
+    // 2. Count users by isProfileStatus
+    const statusCounts = await userDetailsModel.aggregate([
+      {
+        $group: {
+          _id: "$isProfileStatus",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const statusMap = statusCounts.reduce((acc, item) => {
+      acc[item._id] = item.count;
+      return acc;
+    }, {});
+
+    // 3. Group by Religion
+    const religionCounts = await userDetailsModel.aggregate([
+      {
+        $group: {
+          _id: "$religion",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    // 4. Group by Caste
+    const casteCounts = await userDetailsModel.aggregate([
+      {
+        $group: {
+          _id: "$caste",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    // 5. Group by Job Type
+    const jobCounts = await userDetailsModel.aggregate([
+      {
+        $group: {
+          _id: "$jobType",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    res.status(200).json({
+      message: "User stats report generated",
+      totalUsers,
+        pendingProfiles: statusMap["Pending"] || 0,
+        approvedProfiles: statusMap["Approved"] || 0,
+        rejectedProfiles: statusMap["Rejected"] || 0,
+        religion: religionCounts,
+        caste: casteCounts,
+        job: jobCounts
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error generating report", error: error.message });
+  }
+};
+
+
 module.exports = {
   adminLoginDetails,
   getAllUsers,
   streamUserDocument,
+  getCountOfFieldsDetails
 };

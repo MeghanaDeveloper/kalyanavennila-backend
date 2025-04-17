@@ -24,10 +24,12 @@ require('./db/connection')
 const authRoutes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
 const adminRoutes = require('./routes/adminRoutes')
+const tickerRoutes = require('./routes/tickerRoutes')
 
 app.use('/api/auth', authRoutes )
 app.use('/api/profile', profileRoutes )
 app.use('/api/admin', adminRoutes)
+app.use('/api', tickerRoutes)
 
 app.get("/", (req,res) => {
     res.send('hello world')
