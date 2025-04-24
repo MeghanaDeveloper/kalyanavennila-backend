@@ -26,7 +26,7 @@ const adminUser = async (req, res, next) => {
         const user = await adminDetailsModel.findOne({ _id, userName });
 
         if (!user) {
-            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the user name doesn't match." });
+            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the user name doesn't match. Please try again." });
         }
 
         // Attach user details to the request object

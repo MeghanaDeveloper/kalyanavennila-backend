@@ -27,7 +27,7 @@ const authUser = async (req, res, next) => {
         const user = await userDetailsModel.findOne({ _id, email });
 
         if (!user) {
-            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the email doesn't match." });
+            return res.status(404).json({ error:  "We couldn't find your account. It may have been deleted or the email doesn't match. Please try again." });
         }
 
         // Optional checks for email and mobile in addition to ID

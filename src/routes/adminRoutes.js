@@ -6,7 +6,9 @@ const router = express.Router()
 const { adminLoginDetails, getAllUsers, streamUserDocument, getCountOfFieldsDetails } = require("../controllers/adminController");
 const { adminUser } = require("../middlewares/adminMiddleware");
 const { approveProfileStatus, rejectProfileStatus, deleteProfileStatus } = require("../controllers/adminProfileStatusController");
+const createAdmin = require("../scripts/createAdmin");
 
+router.post("/create-admin", createAdmin);
 
 router.post("/login", adminLoginDetails);
 

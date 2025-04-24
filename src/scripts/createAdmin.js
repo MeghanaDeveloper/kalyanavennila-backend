@@ -17,7 +17,7 @@ const createAdmin = async () => {
         console.log(`db error : ${err}`)
     })
 
-    const userName = "superadmin";
+    const userName = "admin";
     const plainPassword = "Admin@123";
 
     const existingAdmin = await adminDetailsModel.findOne({ userName });
@@ -37,4 +37,5 @@ const createAdmin = async () => {
   }
 };
 
-createAdmin();
+module.exports = createAdmin
+

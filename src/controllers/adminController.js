@@ -37,7 +37,9 @@ const getAllUsers = async (req, res) => {
     const users = await userDetailsModel.find({});
     const usersCount = users.length;
 
-    res.status(200).json({ message: "Users retrieved successfully", usersCount, users });
+    res
+      .status(200)
+      .json({ message: "Users retrieved successfully", usersCount, users });
   } catch (error) {
     res
       .status(400)
@@ -45,7 +47,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// 
+//
 const streamUserDocument = async (req, res) => {
   const { email } = req.query;
 
@@ -53,19 +55,15 @@ const streamUserDocument = async (req, res) => {
     const user = await userDetailsModel.findOne({ email });
 
     if (!user) {
-      return res
-        .status(404)
-        .json({
-          error: "This Email address is not registered. Please sign up first!",
-        });
+      return res.status(400).json({
+        error: "This Email address is not registered. Please sign up first!",
+      });
     }
 
     if (!user.documents) {
-      return res
-        .status(404)
-        .json({
-          error: "User did not upload documents. Ask Him to upload first!",
-        });
+      return res.status(400).json({
+        error: "User did not upload documents. Ask Him to upload first!",
+      });
     }
 
     const fullUrl = user.documents;
@@ -90,9 +88,8 @@ const streamUserDocument = async (req, res) => {
 
     // Pipe the stream to the browser
     data.Body.pipe(res);
-  } catch (err) {
-    console.error("Stream error:", err);
-    res.status(400).json({ error: err.message });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -125,7 +122,7 @@ const getCountOfFieldsDetails = async (req, res) => {
           count: { $sum: 1 },
         },
       },
-      { $sort: { count: -1 } }
+      { $sort: { count: -1 } },
     ]);
 
     // 4. Group by Caste
@@ -136,39 +133,63 @@ const getCountOfFieldsDetails = async (req, res) => {
           count: { $sum: 1 },
         },
       },
-      { $sort: { count: -1 } }
+      { $sort: { count: -1 } },
     ]);
 
     // 5. Group by Job Type
     const jobCounts = await userDetailsModel.aggregate([
       {
+        $addFields: {
+          jobGroup: {
+            $cond: [
+              { $eq: ["$jobType", "Others"] },
+              "$otherJobType",
+              "$jobType",
+            ],
+          },
+        },
+      },
+      {
         $group: {
-          _id: "$jobType",
+          _id: "$jobGroup",
           count: { $sum: 1 },
         },
       },
-      { $sort: { count: -1 } }
+      { $sort: { count: -1 } },
+    ]);
+
+    // 5. Group by mother tongue Type
+    const motherTongueCounts = await userDetailsModel.aggregate([
+      {
+        $group: {
+          _id: "$motherTongue",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
     ]);
 
     res.status(200).json({
       message: "User stats report generated",
       totalUsers,
-        pendingProfiles: statusMap["Pending"] || 0,
-        approvedProfiles: statusMap["Approved"] || 0,
-        rejectedProfiles: statusMap["Rejected"] || 0,
-        religion: religionCounts,
-        caste: casteCounts,
-        job: jobCounts
+      pendingProfiles: statusMap["Pending"] || 0,
+      approvedProfiles: statusMap["Approved"] || 0,
+      rejectedProfiles: statusMap["Rejected"] || 0,
+      religion: religionCounts,
+      caste: casteCounts,
+      job: jobCounts,
+      motherTongue: motherTongueCounts,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error generating report", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error generating report", error: error.message });
   }
 };
-
 
 module.exports = {
   adminLoginDetails,
   getAllUsers,
   streamUserDocument,
-  getCountOfFieldsDetails
+  getCountOfFieldsDetails,
 };
