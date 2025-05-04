@@ -1,37 +1,36 @@
-    const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
-    const transporter = nodemailer.createTransport({
-        host: process.env.GODADDY_SMTP_HOST, 
-        port: process.env.GODADDY_SMTP_PORT, 
-        secure: true, 
-        // pool: true, 
-        // maxConnections: 5, 
-        // maxMessages: 100, 
-        // rateLimit: 5, 
-        auth: { 
-            user: process.env.GODADDY_EMAIL,
-            pass: process.env.GODADDY_PASSWORD
-        },
-        tls: {
-            rejectUnauthorized: false  // ✅ Fix potential SSL issues
-        }
-    });
+const transporter = nodemailer.createTransport({
+  host: process.env.GODADDY_SMTP_HOST,
+  port: process.env.GODADDY_SMTP_PORT,
+  secure: true,
+  // pool: true,
+  // maxConnections: 5,
+  // maxMessages: 100,
+  // rateLimit: 5,
+  auth: {
+    user: process.env.GODADDY_EMAIL,
+    pass: process.env.GODADDY_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false, // ✅ Fix potential SSL issues
+  },
+});
 
-    transporter.verify(function (error, success) {
-        if (error) {
-            console.error("SMTP Connection Error:", error);
-        } else {
-            console.log("✅ SMTP Server is Ready to Send Emails", success);
-        }
-    });
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error("SMTP Connection Error:", error);
+  } else {
+    console.log("✅ SMTP Server is Ready to Send Emails", success);
+  }
+});
 
-
-    const sendOtpToEmail = async (email, otp) => {
-        const mailOptions = {
-            from: process.env.GODADDY_EMAIL, 
-            to: email,
-            subject: "sending Otp for Kalyana Vennila - Account Email Verification",
-            html: `
+const sendOtpToEmail = async (email, otp) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "sending Otp for Kalyana Vennila - Account Email Verification",
+    html: `
             <div style=" padding: 10px">
                 <h2>Kalyana Vennila - OTP Verification</h2>
                 <p>Dear User,</p>
@@ -44,30 +43,30 @@
                 <p>Best Regards,</p>
                 <p><strong>Kalyana Vennila Support Team</strong></p>
             </div>
-        `
-        };
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            return {
-                success: true,
-                message: "Email sent successfully!",
-                messageId: info.messageId
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: "Failed to send email.",
-                error: error.message
-            };
-        }
+        `,
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return {
+      success: true,
+      message: "Email sent successfully!",
+      messageId: info.messageId,
     };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to send email.",
+      error: error.message,
+    };
+  }
+};
 
-    const sendAccountIdToEmail = async (email, accountId) => {
-        const mailOptions = {
-            from: process.env.GODADDY_EMAIL, 
-            to: email,
-            subject: "Kalyana Vennila - Account Registration Successful",
-            html: `
+const sendAccountIdToEmail = async (email, accountId) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "Kalyana Vennila - Account Registration Successful",
+    html: `
             <div style=" padding: 10px">
                 <h2>Welcome to Kalyana Vennila!</h2>
                 <p>Dear User,</p>
@@ -84,32 +83,30 @@
                 <p>Best Regards,</p>
                 <p><strong>Kalyana Vennila Support Team</strong></p>
             </div>
-        `
-
-        };
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            return {
-                success: true,
-                message: "Email sent successfully!",
-                messageId: info.messageId
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: "Failed to send email.",
-                error: error.message
-            };
-        }
+        `,
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return {
+      success: true,
+      message: "Email sent successfully!",
+      messageId: info.messageId,
     };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to send email.",
+      error: error.message,
+    };
+  }
+};
 
-
-    const sendTemporaryPasswordToEmail = async (email, password) => {
-        const mailOptions = {
-            from: process.env.GODADDY_EMAIL, 
-            to: email,
-            subject: "Kalyana Vennila - Reset Password",
-            html: `
+const sendTemporaryPasswordToEmail = async (email, password) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "Kalyana Vennila - Reset Password",
+    html: `
                 <div style=" padding: 10px">
                     <h2>Kalyana Vennila - Password Reset</h2>
                     <p>Dear User,</p>
@@ -122,31 +119,31 @@
                     <p>Thank you,</p>
                     <p><strong>Kalyana Vennila Support Team</strong></p>
                 </div>
-            `
-        };
+            `,
+  };
 
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            return {
-                success: true,
-                message: "Temporary password email sent successfully!",
-                messageId: info.messageId
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: "Failed to send email.",
-                error: error.message
-            };
-        }
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return {
+      success: true,
+      message: "Temporary password email sent successfully!",
+      messageId: info.messageId,
     };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to send email.",
+      error: error.message,
+    };
+  }
+};
 
-    const sendProfileApprovedEmail = async (email, name) => {
-        const mailOptions = {
-            from: process.env.GODADDY_EMAIL,
-            to: email,
-            subject: "Kalyana Vennila - Your Profile is Approved!",
-            html: `
+const sendProfileApprovedEmail = async (email, name) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "Kalyana Vennila - Your Profile is Approved!",
+    html: `
                 <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
                     <h2 style="color: green;">🎉 Congratulations, ${name}!</h2>
                     <p>Your profile has been <strong>successfully approved</strong> by the Kalyana Vennila team.</p>
@@ -161,56 +158,96 @@
                     <p>Warm regards,</p>
                     <p><strong>Kalyana Vennila Support Team</strong></p>
                 </div>
-            `
-        };
-    
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            return { success: true, messageId: info.messageId };
-        } catch (error) {
-            return { success: false, error: error.message };
-        }
-    };
+            `,
+  };
 
-    const sendProfileRejectedEmail = async (email, name) => {
-        const mailOptions = {
-            from: process.env.GODADDY_EMAIL,
-            to: email,
-            subject: "Kalyana Vennila - Profile Rejected",
-            html: `
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+const sendProfileRejectedEmail = async (email, name, reason) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "Kalyana Vennila - Profile Rejected",
+    html: `
                 <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
-                    <h2 style="color: #cc0000;">Dear ${name},</h2>
+                    <h2>Dear ${name},</h2>
                     
                     <p>Thank you for registering with <strong>Kalyana Vennila</strong>.</p>
     
                     <p>After carefully reviewing your profile, we regret to inform you that it has not been approved to go live on our platform.</p>
     
                     <p>This decision was made based on our profile review guidelines to ensure authenticity and compatibility within our community.</p>
+
+                    <h3><strong>Reason for Rejection:</strong></h3>
+<p style="color:red , font-size:18px">${reason}</p>
+
     
-                    <p>We sincerely appreciate your interest, and you're always welcome to reconnect with us or update your profile for future consideration.</p>
+                    <p>You're welcome to log in to your account, make the necessary updates, and resubmit your profile for review. Our team will be happy to reassess it once submitted.</p>
     
-                    <p>Thank you once again for reaching out to us.</p>
+                    <p>We truly appreciate your interest in Kalyana Vennila and look forward to welcoming you to our community in the near future.</p>
                     
                     <br/>
                     <p>Warm regards,</p>
                     <p><strong>Kalyana Vennila Team</strong></p>
                 </div>
-            `
-        };  
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            return { success: true, messageId: info.messageId };
-        } catch (error) {
-            return { success: false, error: error.message };
-        }
-    };
-    
-    
+            `,
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
 
-    module.exports = {
-        sendOtpToEmail,
-        sendAccountIdToEmail,
-        sendTemporaryPasswordToEmail,
-        sendProfileApprovedEmail,
-        sendProfileRejectedEmail
-    }
+const sendProfileBlockedEmail = async (email, name, reason) => {
+  const mailOptions = {
+    from: process.env.GODADDY_EMAIL,
+    to: email,
+    subject: "Kalyana Vennila - Profile Blocked",
+    html: `
+      <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
+        <h2>Dear ${name},</h2>
+
+        <p>Thank you for being part of <strong>Kalyana Vennila</strong>.</p>
+
+        <p>We regret to inform you that your profile has been <strong>blocked</strong> due to a violation of our platform guidelines or other serious concerns.</p>
+
+        <h3><strong>Reason for Blocking your profile:</strong></h3>
+        <p style="color:red; font-size:18px">${reason}</p>
+
+        <p>As a result, your account has been temporarily or permanently suspended, and you will not be able to log in or access our platform.</p>
+
+        <p>If you believe this action was taken in error or wish to appeal the decision, please contact our support team at services@kalyanavennila.com</p>
+
+        <p>We value your understanding and are here to assist you with any concerns you may have.</p>
+
+        <br/>
+        <p>Warm regards,</p>
+        <p><strong>Kalyana Vennila Team</strong></p>
+      </div>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+module.exports = {
+  sendOtpToEmail,
+  sendAccountIdToEmail,
+  sendTemporaryPasswordToEmail,
+  sendProfileApprovedEmail,
+  sendProfileRejectedEmail,
+  sendProfileBlockedEmail,
+};

@@ -1,8 +1,8 @@
-const { adminDetailsModel } = require("../models/adminSchema");
+const { adminDetailsModel } = require("../../models/adminSchema");
 const bcrypt = require("bcrypt");
-const { adminToken } = require("../utilities/token");
-const { userDetailsModel } = require("../models/userSchema");
-const s3Client = require("../utilities/awsConfig");
+const { adminToken } = require("../../utilities/token");
+const { userDetailsModel } = require("../../models/userSchema");
+const s3Client = require("../../utilities/awsConfig");
 const { GetObjectCommand } = require("@aws-sdk/client-s3");
 
 const adminLoginDetails = async (req, res) => {
@@ -182,7 +182,7 @@ const getCountOfFieldsDetails = async (req, res) => {
     });
   } catch (error) {
     res
-      .status(500)
+      .status(400)
       .json({ message: "Error generating report", error: error.message });
   }
 };

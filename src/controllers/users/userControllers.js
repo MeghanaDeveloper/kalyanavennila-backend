@@ -1,9 +1,9 @@
 
-const { userDetailsModel } = require("../models/userSchema");
-const { sendOtpToEmail } = require("../utilities/emailServices");
-const { generateOtp } = require("../utilities/generators");
-const { createToken } = require("../utilities/token");
-const { userValidation } = require("../validations/userValidations");
+const { userDetailsModel } = require("../../models/userSchema");
+const { sendOtpToEmail } = require("../../utilities/emailServices");
+const { generateOtp } = require("../../utilities/generators");
+const { createToken } = require("../../utilities/token");
+const { userValidation } = require("../../validations/userValidations");
 const bcrypt = require('bcrypt')
 
 
@@ -79,6 +79,18 @@ const userLoginDetails = async (req, res) => {
         if (!match) {
             return res.status(400).json({ error: "Incorrect password!" }); 
         }
+
+        if (user.isProfileStatus === "Rejected") {
+            user.isProfileStatus = "Pending"; 
+            await user.save(); 
+        }
+
+        if (user.isProfileStatus === "Blocked") {
+            return res.status(400).json({
+                error: "Your account has been blocked by the admin. Please check your email for details. For any concerns, feel free to contact our support team.",
+              });
+          }
+          
 
         const token = createToken({ _id: user._id, email: user.email, mobile:user.mobile, accountId: user.accountId });
 

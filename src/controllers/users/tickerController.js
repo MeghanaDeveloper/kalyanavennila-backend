@@ -68,7 +68,7 @@
 //     }
 //   };
   
-const { clickTrackingModel } = require("../models/clickTrackingSchema");
+const { clickTrackingModel } = require("../../models/clickTrackingSchema");
 
 const clickTracking = async (req, res) => {
   const { url } = req.body;

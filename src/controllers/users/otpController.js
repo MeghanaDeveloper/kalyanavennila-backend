@@ -1,6 +1,6 @@
-const { userDetailsModel } = require("../models/userSchema");
-const { sendAccountIdToEmail, sendOtpToEmail } = require("../utilities/emailServices");
-const { generateAccountId, generateOtp } = require("../utilities/generators");
+const { userDetailsModel } = require("../../models/userSchema");
+const { sendAccountIdToEmail, sendOtpToEmail } = require("../../utilities/emailServices");
+const { generateAccountId, generateOtp } = require("../../utilities/generators");
 
 
 //verify otp

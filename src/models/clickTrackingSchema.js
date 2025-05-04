@@ -16,6 +16,6 @@ const clickTrackingSchema = new mongoose.Schema({
 )
 
 
-const clickTrackingModel = new mongoose.model("ticker", clickTrackingSchema);
+//const clickTrackingModel = new mongoose.model("ticker", clickTrackingSchema);
 
-module.exports = { clickTrackingModel };
+//module.exports = { clickTrackingModel };

@@ -4,10 +4,13 @@ const express = require("express");
 const router = express.Router()
 
 const { authUser } = require("../middlewares/authMiddleware");
-const { updateProfileDetails } = require("../controllers/userControllers");
-const { uploadProfileImage, updateProfileImage, deleteProfileImage, uploadDocuments, updateDocuments, deleteDocuments } = require("../controllers/profileController");
 const { uploadImages, uploadFiles } = require("../utilities/multer");
 const { multerMiddleware } = require("../middlewares/multerMiddleware");
+const { updateProfileDetails } = require("../controllers/users/userControllers");
+const { deleteProfileImage, uploadProfileImage, updateProfileImage, uploadDocuments, updateDocuments, deleteDocuments } = require("../controllers/users/profileController");
+const { getAllUsers } = require("../controllers/admin/adminController");
+
+
 
 router.patch('/update-profile', authUser, updateProfileDetails)
 
@@ -23,6 +26,6 @@ router.patch("/update-documents", authUser, uploadFiles.single('proof-document')
 
 router.delete("/delete-documents", authUser, multerMiddleware, deleteDocuments);
 
-
+router.get('/all-users', getAllUsers);
 
 module.exports = router

@@ -1,6 +1,6 @@
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
-const s3Client = require("../utilities/awsConfig");
-const { userDetailsModel } = require("../models/userSchema");
+const s3Client = require("../../utilities/awsConfig");
+const { userDetailsModel } = require("../../models/userSchema");
 
 //upload profile image
 const uploadProfileImage = async (req, res) => {

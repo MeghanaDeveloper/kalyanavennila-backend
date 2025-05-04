@@ -7,7 +7,6 @@ const { adminDetailsModel } = require("../models/adminSchema");
 
 
 const createAdmin = async () => {
-  console.log('admin')
   try {
     mongoose.connect(process.env.MONGOOSE_CONNECTION)
     .then(() => {
@@ -17,7 +16,7 @@ const createAdmin = async () => {
         console.log(`db error : ${err}`)
     })
 
-    const userName = "admin";
+    const userName = "superAdmin";
     const plainPassword = "Admin@123";
 
     const existingAdmin = await adminDetailsModel.findOne({ userName });

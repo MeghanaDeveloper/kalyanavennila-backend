@@ -1,8 +1,8 @@
-const { userDetailsModel } = require("../models/userSchema");
-const { sendTemporaryPasswordToEmail } = require("../utilities/emailServices");
-const { generateTempPassword } = require("../utilities/generators");
-const createToken = require("../utilities/token");
-const { passwordValidation } = require("../validations/userValidations");
+const { userDetailsModel } = require("../../models/userSchema");
+const { sendTemporaryPasswordToEmail } = require("../../utilities/emailServices");
+const { generateTempPassword } = require("../../utilities/generators");
+const createToken = require("../../utilities/token");
+const { passwordValidation } = require("../../validations/userValidations");
 const bcrypt = require('bcrypt')
 
 
