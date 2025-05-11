@@ -1,12 +1,57 @@
 const mongoose = require("mongoose");
 
-const capitalizeWords = (value) => {
-  if (!value) return value;
-  return value
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-};
+const locationSchema = new mongoose.Schema(
+  {
+    country: {
+      code: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+    },
+    state: {
+      code: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+    },
+    city: {
+      code: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+    },
+  },
+  { _id: false }
+);
+
+const partnerPreferencesSchema = new mongoose.Schema(
+  {
+    lookingFor: { type: String, enum: ["Bride", "Groom"] },
+    partnerAge: {
+      type: String,
+      enum: [
+        "21-25",
+        "25-30",
+        "30-35",
+        "35-40",
+        "40-45",
+        "45-50",
+        "50-55",
+        "55-60",
+      ],
+    },
+    partnerReligion: { type: String, default: "No Religion Bar" },
+    partnerCaste: { type: String, default: "No Caste Bar" },
+    partnerMotherTongue: { type: String, default: "No Language Bar" },
+  },
+  { _id: false }
+);
 
 const userDetailsSchema = new mongoose.Schema(
   {
@@ -66,62 +111,25 @@ const userDetailsSchema = new mongoose.Schema(
       enum: ["Govt", "MNC", "Private", "NRI", "Business", "Others"],
     },
     otherJobType: { type: String },
-    lookingFor: { type: String, enum: ["Bride", "Groom"] },
-    partnerAge: {
-      type: String,
-      enum: ["21-25", "25-30", "30-35", "35-40", "40-45", "45-50", "50-55"],
-    },
-    partnerReligion: { type: String, default: "No Religion Bar" },
-    partnerCaste: { type: String, default: "No Caste Bar" },
-    partnerMotherTongue: { type: String, default: "No Language Bar" },
     profilePic: { type: String },
     documents: { type: String },
     isProfileStatus: {
-        type: String,
-        enum: [ 'Pending','Approved', 'Rejected','Blocked'],
-        default: 'Pending'
-      },
-      rejectionReason: {
-        type: String,
-        default: "",
-      },
-      blockedReason: {
-        type: String,
-        default: "",
-      },
-      
+      type: String,
+      enum: ["Pending", "Approved", "Rejected", "Blocked"],
+      default: "Pending",
+    },
+    rejectionReason: {
+      type: String,
+      default: "",
+    },
+    blockedReason: {
+      type: String,
+      default: "",
+    },
+    locationDetails: locationSchema,
+    partnerPreferences: partnerPreferencesSchema,
   },
   { timestamps: true }
 );
 
-userDetailsSchema.pre("save", function (next) {
-  if (this.dateOfBirth) {
-    const today = new Date();
-    const birthDate = new Date(this.dateOfBirth);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    this.myAge = age;
-  }
-  next();
-});
-
-userDetailsSchema.pre("save", function (next) {
-  this.surName = capitalizeWords(this.surName);
-  this.firstName = capitalizeWords(this.firstName);
-  this.lastName = capitalizeWords(this.lastName);
-  this.motherTongue = capitalizeWords(this.motherTongue);
-  this.religion = capitalizeWords(this.religion);
-  this.caste = capitalizeWords(this.caste);
-  this.subCaste = capitalizeWords(this.subCaste);
-  next();
-});
-
-const userDetailsModel = new mongoose.model("UserDetails", userDetailsSchema);
-
-module.exports = { userDetailsModel };
+module.exports = { userDetailsSchema };

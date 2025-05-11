@@ -1,5 +1,5 @@
 
-const { userDetailsModel } = require("../../models/userSchema");
+const { userDetailsModel } = require("../../models/userHooks");
 const { sendOtpToEmail } = require("../../utilities/emailServices");
 const { generateOtp } = require("../../utilities/generators");
 const { createToken } = require("../../utilities/token");
@@ -80,11 +80,6 @@ const userLoginDetails = async (req, res) => {
             return res.status(400).json({ error: "Incorrect password!" }); 
         }
 
-        if (user.isProfileStatus === "Rejected") {
-            user.isProfileStatus = "Pending"; 
-            await user.save(); 
-        }
-
         if (user.isProfileStatus === "Blocked") {
             return res.status(400).json({
                 error: "Your account has been blocked by the admin. Please check your email for details. For any concerns, feel free to contact our support team.",
@@ -117,44 +112,7 @@ const userLoginDetails = async (req, res) => {
     }
 };
 
-//update profile
-const updateProfileDetails = async (req, res) => {
-    const { email } = req.userDetails;
-    const updateFields = req.body;
 
-    try {
-        const user = await userDetailsModel.findOne({email});
-        if (!user) {
-            return res.status(404).json({ error: "This Email address is not registered. Please sign up first!" });
-        }
-
-        Object.keys(updateFields).forEach((key) => {
-            if (updateFields[key] !== undefined) {
-                user[key] = updateFields[key];
-            }
-        });
-
-        await user.save();
-        res.status(200).json({ message: "User details updated successfully", user });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-};
-
-//users
-const getUserByEmail = async (req, res) => {
-    const { email } = req.userDetails;
-    try {
-        const user = await userDetailsModel.findOne({email});
-        if (!user) {
-            return res.status(404).json({ error: "This Email address is not registered. Please sign up first!" });
-        }
-
-        res.status(200).json({ message: "Users retrieved successfully", user });
-    } catch (error) {
-        res.status(400).json({  error: error.message });
-    }
-};
 
 
 
@@ -162,7 +120,5 @@ const getUserByEmail = async (req, res) => {
 
 module.exports={
     userSignupDetails,
-    userLoginDetails,
-    updateProfileDetails,
-    getUserByEmail
+    userLoginDetails
 } 

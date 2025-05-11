@@ -1,7 +1,7 @@
 const { adminDetailsModel } = require("../../models/adminSchema");
 const bcrypt = require("bcrypt");
 const { adminToken } = require("../../utilities/token");
-const { userDetailsModel } = require("../../models/userSchema");
+const { userDetailsModel } = require("../../models/userHooks");
 const s3Client = require("../../utilities/awsConfig");
 const { GetObjectCommand } = require("@aws-sdk/client-s3");
 

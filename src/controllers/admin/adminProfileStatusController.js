@@ -1,5 +1,5 @@
 const { clickTrackingModel } = require("../../models/clickTrackingSchema");
-const { userDetailsModel } = require("../../models/userSchema");
+const { userDetailsModel } = require("../../models/userHooks");
 const {
   sendProfileRejectedEmail,
   sendProfileApprovedEmail,

@@ -1,4 +1,4 @@
-const { userDetailsModel } = require("../../models/userSchema");
+const { userDetailsModel } = require("../../models/userHooks");
 const { sendAccountIdToEmail, sendOtpToEmail } = require("../../utilities/emailServices");
 const { generateAccountId, generateOtp } = require("../../utilities/generators");
 

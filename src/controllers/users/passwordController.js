@@ -1,4 +1,4 @@
-const { userDetailsModel } = require("../../models/userSchema");
+const { userDetailsModel } = require("../../models/userHooks");
 const { sendTemporaryPasswordToEmail } = require("../../utilities/emailServices");
 const { generateTempPassword } = require("../../utilities/generators");
 const createToken = require("../../utilities/token");
