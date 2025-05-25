@@ -4,10 +4,11 @@ const express = require("express")
 const router = express.Router()
 
 const { authUser } = require("../middlewares/authMiddleware")
-const { userSignupDetails, userLoginDetails } = require("../controllers/users/userControllers")
+const { userSignupDetails, userLoginDetails, userContactMessages } = require("../controllers/users/userControllers")
 const { OTPVerification, resendOtp } = require("../controllers/users/otpController")
 const { createPassword, forgotPassword, resetPassword } = require("../controllers/users/passwordController")
 
+router.post('/user-contact', userContactMessages)
 
 router.post('/registration', userSignupDetails)
 

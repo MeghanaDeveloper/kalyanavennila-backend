@@ -12,10 +12,12 @@ const port = process.env.PORT
 //middleware    
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
-    credentials: true, // allow cookies and headers
-  }));
+app.use(cors(
+//     {
+//     origin: ["http://localhost:5173", "http://localhost:5174"],
+//     credentials: true, // allow cookies and headers
+//   }
+));
 
 //db connection
 require('./db/connection')

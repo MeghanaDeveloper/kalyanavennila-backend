@@ -4,10 +4,6 @@ const transporter = nodemailer.createTransport({
   host: process.env.GODADDY_SMTP_HOST,
   port: process.env.GODADDY_SMTP_PORT,
   secure: true,
-  // pool: true,
-  // maxConnections: 5,
-  // maxMessages: 100,
-  // rateLimit: 5,
   auth: {
     user: process.env.GODADDY_EMAIL,
     pass: process.env.GODADDY_PASSWORD,
@@ -243,6 +239,44 @@ const sendProfileBlockedEmail = async (email, name, reason) => {
   }
 };
 
+const sendContactMessagesToEmail = async (name, email, phone, message) => {
+  const mailOptions = {
+    from: email,
+    to: process.env.GODADDY_ADMIN_EMAIL,
+    subject: ` Message from ${name}`,
+    html: `
+      <div style="padding: 16px; font-family: Arial, sans-serif; color: #333;">
+        <h2>Dear Sir/Madam</h2>
+
+        <p>My name is <strong>${name}</strong>. I’m reaching out to you through the contact form.</p>
+
+        <p>I would like to bring the following matter to your attention:</p>
+
+         <p style=" color: #555; font-size:16px"><strong>${message}</strong></p>
+
+    <p>Please let me know if you require any further information. </p>
+
+    <p>Thank you for your time and consideration.</p>
+
+    <p>I look forward to your response.</p>
+
+        <br/>
+        <p>Thank You</p>
+        <p><strong>${name}</strong></p>
+         <p><strong>${email}</strong></p>
+          <p><strong>${phone}</strong></p>
+      </div>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
 module.exports = {
   sendOtpToEmail,
   sendAccountIdToEmail,
@@ -250,4 +284,5 @@ module.exports = {
   sendProfileApprovedEmail,
   sendProfileRejectedEmail,
   sendProfileBlockedEmail,
+  sendContactMessagesToEmail,
 };
