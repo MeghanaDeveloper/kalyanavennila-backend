@@ -4,7 +4,8 @@ const multerS3 = require('multer-s3');
 const s3Client = require('./awsConfig');
 require('dotenv').config();
 
-console.log(process.env.AWS_S3_BUCKET_NAME)
+export const MAX_SIZE = 50 * 1024 * 1024;
+
 const uploadImages = multer({
     storage: multerS3({
         s3: s3Client,
@@ -16,7 +17,7 @@ const uploadImages = multer({
             cb(null, `profile-images/${Date.now()}-${file.originalname}`);
         }
     }),
-    limits: { fileSize: 50 * 1024 }, // 50KB
+     limits: { fileSize: MAX_SIZE },
     fileFilter: (req, file, cb) => {
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg") {
             cb(null, true);
@@ -40,7 +41,7 @@ const uploadFiles = multer({
             cb(null, `proof-documents/${Date.now()}-${file.originalname}`);
         }
     }),
-  limits: { fileSize: 50 * 1024 }, // 50KB
+  limits: { fileSize: MAX_SIZE },
     fileFilter: (req, file, cb) => {
         if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg") {
             cb(null, true);
