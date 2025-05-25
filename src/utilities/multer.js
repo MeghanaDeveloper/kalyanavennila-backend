@@ -4,7 +4,7 @@ const multerS3 = require('multer-s3');
 const s3Client = require('./awsConfig');
 require('dotenv').config();
 
-export const MAX_SIZE = 50 * 1024 * 1024;
+ const MAX_SIZE = 50 * 1024 * 1024;
 
 const uploadImages = multer({
     storage: multerS3({
@@ -54,5 +54,6 @@ const uploadFiles = multer({
 
 module.exports = {
     uploadImages,
-    uploadFiles
+    uploadFiles,
+    MAX_SIZE
 };
